@@ -1,4 +1,3 @@
-import 'package:dinisorular/controller/categoriesController.dart';
 import 'package:dinisorular/models/anaMenuModel.dart';
 import 'package:dinisorular/utils/dbHelper.dart';
 import 'package:flutter/material.dart';
