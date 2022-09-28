@@ -1,4 +1,6 @@
 import 'package:dinisorular/models/anaMenuModel.dart';
+import 'package:dinisorular/ui/helper/color_helper.dart';
+import 'package:dinisorular/ui/styles/box_style.dart';
 import 'package:dinisorular/utils/dbHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +21,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
   late DatabaseHelper databaseHelper ;
   List<AnaMenu> anaMenu = [] ;
   late double height;
+  late double width;
+  bool lightThema = true;
 
   @override
   void initState() {
@@ -30,23 +34,24 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   @override
   Widget build(BuildContext context) {
-    //test
+
      height = Get.height-context.mediaQueryPadding.top;
-    double width  = Get.width;
+     width  = Get.width;
+
 
     return Container(
-      color: Theme.of(context).backgroundColor,
+      color:lightThema ? UIColorThemaLight.Thema : UIColorThemaDark.Thema ,
       child: Container(
         margin: EdgeInsets.only(top:context.mediaQueryPadding.top ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-           anaMenu == [] ?CircularProgressIndicator() : Container(
-              height: height/100*70,
+            categoriesText(),
+            anaMenu == [] ?CircularProgressIndicator() : Container(
+              height: height/100*90,
               width: width,
               child: ListView.builder(
                 controller: ScrollController(keepScrollOffset: false),
-                padding: EdgeInsets.only(top: 0,bottom: 0),
+                padding: EdgeInsets.only(top: 0,bottom: 0,left: width/100*5,right: width/100*5),
                 itemBuilder: (context, index) => kategori(index),
                 itemCount:anaMenu.length,
               ),
@@ -58,14 +63,25 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   }
 
+  Container categoriesText(){
+    return Container(
+      height: height/100 * 10,
+      width: width,
+      alignment: Alignment.center,
+      child: Text(
+        "Kategori",
+            style: UITextStyle.kategoriText(height/100*5,lightThema ? UIColorThemaLight.TEXT : UIColorThemaDark.TEXT),
+      ),
+    );
+  }
+
   Container kategori(int id){
     return Container(
       height: height/100*15,
-      width: 250,
-      color: Colors.redAccent,
       alignment: Alignment.center,
-      margin: EdgeInsets.only(top: 10),
-      child: Text(anaMenu[id].name,style:UITextStyle.playButton(25),),
+      margin: EdgeInsets.only(top: 15),
+      decoration: BoxStyle.boxCategoriesStyle(lightThema),
+      child: Text(anaMenu[id].name,style:UITextStyle.kategoriDetailsText(25,lightThema),),
     );
   }
 

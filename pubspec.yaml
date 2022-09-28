@@ -94,6 +94,9 @@ flutter:
     - family: PaytoneOne
       fonts:
         - asset: assets/fonts/PaytoneOne.ttf
+    - family: Sansita
+      fonts:
+        - asset: assets/fonts/Sansita.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

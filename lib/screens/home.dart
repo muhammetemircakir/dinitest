@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
                       height: height/100*35,
                       color: Colors.transparent,
                       alignment: Alignment.center,
-                      child:  Text("Başla",style:UITextStyle.playButton(height/100*5),),
+                      child:  Text("Başla",style:UITextStyle.playButton(height/100*5,false),),
                     ),
                   ],
                 ),
