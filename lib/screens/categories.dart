@@ -1,4 +1,5 @@
 import 'package:dinisorular/models/anaMenuModel.dart';
+import 'package:dinisorular/screens/testList.dart';
 import 'package:dinisorular/ui/helper/color_helper.dart';
 import 'package:dinisorular/ui/styles/box_style.dart';
 import 'package:dinisorular/utils/dbHelper.dart';
@@ -70,18 +71,23 @@ class _CategoriesPageState extends State<CategoriesPage> {
       alignment: Alignment.center,
       child: Text(
         "Kategori",
-            style: UITextStyle.kategoriText(height/100*5,lightThema ? UIColorThemaLight.TEXT : UIColorThemaDark.TEXT),
+            style: UITextStyle.baslikText(height/100*5,lightThema ? UIColorThemaLight.TEXT : UIColorThemaDark.TEXT),
       ),
     );
   }
 
-  Container kategori(int id){
-    return Container(
-      height: height/100*15,
-      alignment: Alignment.center,
-      margin: EdgeInsets.only(top: 15),
-      decoration: BoxStyle.boxCategoriesStyle(lightThema),
-      child: Text(anaMenu[id].name,style:UITextStyle.kategoriDetailsText(25,lightThema),),
+  GestureDetector kategori(int id){
+    return GestureDetector(
+      onTap: (){
+        Get.to(TestList(anaMenuId: anaMenu[id].id));
+      },
+      child: Container(
+        height: height/100*15,
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(top: 15),
+        decoration: BoxStyle.boxCategoriesStyle(lightThema),
+        child: Text(anaMenu[id].name,style:UITextStyle.kategoriDetailsText(25,lightThema),),
+      ),
     );
   }
 

@@ -13,7 +13,7 @@ class UITextStyle{
       );
 
 
-  static TextStyle kategoriText(double height,Color color) =>
+  static TextStyle baslikText(double height,Color color) =>
       TextStyle(
           fontSize: height,
           inherit: false,
