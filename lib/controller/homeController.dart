@@ -1,23 +1,22 @@
+import 'package:dinisorular/models/anaMenuModel.dart';
+import 'package:dinisorular/utils/dbHelper.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class HomePageController extends GetxController {
-  final count = 0.obs;
-  final list = [1.obs,2.obs,3.obs,4.obs,5.obs];
-  increment() => count.value++;
+  DatabaseHelper databaseHelper = DatabaseHelper();
 
-  mesajyolla(){
-    print("selamunaleyküm");
-    print("başlangıç");
-    print("selamunaleyküm");
+  getThema()
+  async{
+    // Get.changeTheme(a?ThemeData.light():ThemeData.dark());
   }
 
-  neoluyoYa(){
-    count.value = 0;
+  changeThema(bool thema)
+  {
+    //box.write("thema", thema);
+    Get.changeTheme(thema?ThemeData.light():ThemeData.dark());
   }
 
-  listeGuncelle( int a){
 
-   // list.value =[5,35,6,3,2];
-    list[0].value= a;
-  }
 }

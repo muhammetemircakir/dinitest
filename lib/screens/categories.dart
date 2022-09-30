@@ -5,6 +5,7 @@ import 'package:dinisorular/ui/styles/box_style.dart';
 import 'package:dinisorular/utils/dbHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../controller/homeController.dart';
 import '../ui/styles/text_style.dart';
@@ -18,17 +19,18 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-
+  final box = GetStorage();
   late DatabaseHelper databaseHelper ;
   List<AnaMenu> anaMenu = [] ;
   late double height;
   late double width;
-  bool lightThema = true;
+  late bool lightThema;
 
   @override
   void initState() {
     databaseHelper = DatabaseHelper();
     anamenuGet();
+    lightThema = box.read("thema")??true;
     // TODO: implement initState
     super.initState();
   }
@@ -38,7 +40,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
      height = Get.height-context.mediaQueryPadding.top;
      width  = Get.width;
-
 
     return Container(
       color:lightThema ? UIColorThemaLight.Thema : UIColorThemaDark.Thema ,
@@ -79,7 +80,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   GestureDetector kategori(int id){
     return GestureDetector(
       onTap: (){
-        Get.to(TestList(anaMenuId: anaMenu[id].id));
+        Get.to(TestList(anaMenuId: anaMenu[id].id,anaMenuText: anaMenu[id].name,));
       },
       child: Container(
         height: height/100*15,

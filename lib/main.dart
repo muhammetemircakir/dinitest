@@ -1,14 +1,13 @@
 import 'package:dinisorular/screens/Home.dart';
-import 'package:dinisorular/ui/styles/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get_storage/get_storage.dart';
 
-import 'controller/homeController.dart';
+void main() async{
+  await GetStorage.init();
 
-void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,10 +16,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    ThemeData _darkTheme = ThemeData(
+        backgroundColor:Color(0xFF3B3B3B),
+    );
 
+    ThemeData _lightTheme = ThemeData(
+      backgroundColor:  Color(0xFFFFFFFF),
+        );
 
     return GetMaterialApp(
-
+      theme: _lightTheme,
+      darkTheme: _darkTheme,
+      debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
   }

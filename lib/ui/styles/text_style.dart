@@ -9,7 +9,7 @@ class UITextStyle{
           fontSize: height,
           inherit: false,
           color:lightThema ? Color(0xFF3B3B3B):Color(0xFF3B3B3B),
-          fontFamily: 'PaytoneOne'
+          fontFamily: 'Sansita'
       );
 
 
@@ -27,5 +27,29 @@ class UITextStyle{
           inherit: false,
           color:lightThema ? UIColorThemaLight.TEXT:UIColorThemaDark.TEXT,
           fontFamily: 'Sansita'
+      );
+
+  static TextStyle testText(double height,bool lightThema) =>
+      TextStyle(
+          fontSize: height,
+          inherit: false,
+          color:lightThema ? UIColorThemaLight.TEXT:UIColorThemaDark.TEXT,
+          fontFamily: 'Arima'
+      );
+
+  static TextStyle questions(double height,bool lightThema) =>
+      TextStyle(
+          fontSize: height,
+          inherit: false,
+          color:lightThema ? UIColorThemaLight.TEXT:UIColorThemaDark.TEXT,
+          fontFamily: 'Arima'
+      );
+
+  static TextStyle counter(double height,bool lightThema) =>
+      TextStyle(
+          fontSize: height,
+          inherit: false,
+          color:lightThema ? UIColorThemaLight.TEXT:UIColorThemaDark.TEXT,
+
       );
 }

@@ -30,5 +30,46 @@ class BoxStyle {
 
   );
 
+  static BoxDecoration boxQuestionStyle(bool lightThema) => BoxDecoration(
+
+    borderRadius: BorderRadius.all(Radius.circular(25)),
+    boxShadow: [
+      BoxShadow(
+          color:lightThema?Color(0xFFD7D7D7):Color(0xFF2B2B2B) ,
+          blurRadius: 5,
+          spreadRadius: 1.0,
+          offset: Offset(
+            0,
+            0,
+          )),
+    ],
+    color:lightThema ?UIColorThemaLight.KategoriBox :UIColorThemaDark.KategoriBox,
+    //color: Color(0xFFF3F1F1),
+
+    // border: Border.all(color: Colors.grey.shade700, width: 1),
+
+  );
+
+  static BoxDecoration boxAnswerStyle(bool lightThema) => BoxDecoration(
+
+    borderRadius: BorderRadius.all(Radius.circular(25)),
+    boxShadow: [
+      BoxShadow(
+          color:lightThema?Color(0xFFD7D7D7):Color(0xFF2B2B2B) ,
+          blurRadius: 5,
+          spreadRadius: 1.0,
+          offset: Offset(
+            1,
+            5,
+          )),
+    ],
+    color:lightThema ?UIColorThemaLight.KategoriBox :UIColorThemaDark.KategoriBox,
+    //color: Color(0xFFF3F1F1),
+
+    // border: Border.all(color: Colors.grey.shade700, width: 1),
+
+  );
+
+
 
 }
