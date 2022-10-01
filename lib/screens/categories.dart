@@ -1,3 +1,4 @@
+import 'package:dinisorular/controller/categoriesController.dart';
 import 'package:dinisorular/models/anaMenuModel.dart';
 import 'package:dinisorular/screens/testList.dart';
 import 'package:dinisorular/ui/helper/color_helper.dart';
@@ -21,10 +22,10 @@ class CategoriesPage extends StatefulWidget {
 class _CategoriesPageState extends State<CategoriesPage> {
   final box = GetStorage();
   late DatabaseHelper databaseHelper ;
-  List<AnaMenu> anaMenu = [] ;
   late double height;
   late double width;
   late bool lightThema;
+  categoriesController controller = Get.put(categoriesController());
 
   @override
   void initState() {
@@ -48,16 +49,16 @@ class _CategoriesPageState extends State<CategoriesPage> {
         child: Column(
           children: [
             categoriesText(),
-            anaMenu == [] ?CircularProgressIndicator() : Container(
-              height: height/100*90,
-              width: width,
-              child: ListView.builder(
-                controller: ScrollController(keepScrollOffset: false),
-                padding: EdgeInsets.only(top: 0,bottom: 0,left: width/100*5,right: width/100*5),
-                itemBuilder: (context, index) => kategori(index),
-                itemCount:anaMenu.length,
-              ),
-            ),
+            Obx(()=>controller.categorieList.isEmpty ?CircularProgressIndicator() : Container(
+             height: height/100*90,
+             width: width,
+             child: ListView.builder(
+               controller: ScrollController(keepScrollOffset: false),
+               padding: EdgeInsets.only(top: 0,bottom: 0,left: width/100*5,right: width/100*5),
+               itemBuilder: (context, index) => kategori(index),
+               itemCount:controller.categorieList.length,
+             ),
+           )) ,
           ],
         ),
       ),
@@ -80,25 +81,23 @@ class _CategoriesPageState extends State<CategoriesPage> {
   GestureDetector kategori(int id){
     return GestureDetector(
       onTap: (){
-        Get.to(TestList(anaMenuId: anaMenu[id].id,anaMenuText: anaMenu[id].name,));
+        Get.to(TestList(anaMenuId: controller.categorieList.toList()[id].id,anaMenuText: controller.categorieList.toList()[id].name,));
       },
       child: Container(
         height: height/100*15,
         alignment: Alignment.center,
         margin: EdgeInsets.only(top: 15),
         decoration: BoxStyle.boxCategoriesStyle(lightThema),
-        child: Text(anaMenu[id].name,style:UITextStyle.kategoriDetailsText(25,lightThema),),
+        child: Text(controller.categorieList.toList()[id].name,style:UITextStyle.kategoriDetailsText(25,lightThema),),
       ),
     );
   }
 
   void anamenuGet()async{
     await databaseHelper.kategoriListesiniGetir().then((value) {
-      anaMenu.addAll(value);
+      controller.categorieList.value = value;
     });
-    setState(() {
 
-    });
   }
 
 }

@@ -1,4 +1,5 @@
 import 'package:dinisorular/aracGerec.dart';
+import 'package:dinisorular/controller/testListController.dart';
 import 'package:dinisorular/models/kategoriModel.dart';
 import 'package:dinisorular/screens/test.dart';
 import 'package:dinisorular/utils/dbHelper.dart';
@@ -27,8 +28,8 @@ class _TestListState extends State<TestList> {
   late double height;
   late double width;
   late bool lightThema;
-  List<Kategori> testList = [] ;
   late DatabaseHelper databaseHelper;
+  testListController controller = Get.put(testListController());
 
 
   @override
@@ -52,16 +53,16 @@ class _TestListState extends State<TestList> {
         child: Column(
           children: [
             testlerText(),
-            testList == [] ?CircularProgressIndicator() : Container(
-              height: height/100*90,
-              width: width,
-              child: ListView.builder(
-                controller: ScrollController(keepScrollOffset: false),
-                padding: EdgeInsets.only(top: 0,bottom: height/100*5,left: width/100*5,right: width/100*5),
-                itemBuilder: (context, index) => kategori(index),
-                itemCount:testList.length,
-              ),
-            ),
+           Obx(()=>controller.testList.isEmpty ?CircularProgressIndicator() : Container(
+             height: height/100*90,
+             width: width,
+             child: ListView.builder(
+               controller: ScrollController(keepScrollOffset: false),
+               padding: EdgeInsets.only(top: 0,bottom: height/100*5,left: width/100*5,right: width/100*5),
+               itemBuilder: (context, index) => kategori(index),
+               itemCount:controller.testList.length,
+             ),
+           ),)
           ],
         ),
       ),
@@ -83,7 +84,7 @@ class _TestListState extends State<TestList> {
   GestureDetector kategori(int id){
     return GestureDetector(
       onTap: (){
-        Get.to(Test(anaMenuId:testList[id].anaMenuId, kategoriId: testList[id].kategoriId));
+        Get.to(Test(anaMenuId:controller.testList.toList()[id].anaMenuId, kategoriId: controller.testList.toList()[id].kategoriId));
       },
       child: Container(
         height: height/100*15,
@@ -96,7 +97,7 @@ class _TestListState extends State<TestList> {
             Container(
               width: width/100*20,
               alignment: Alignment.center,
-                child: Text("Test "+testList[id].kategoriId.toString(),style:UITextStyle.testText(height/100*3,lightThema),)
+                child: Text("Test "+controller.testList.toList()[id].kategoriId.toString(),style:UITextStyle.testText(height/100*3,lightThema),)
             ),
             AracGerec.sizedBox(0.0, width/100*15),
             GestureDetector(
@@ -117,10 +118,7 @@ class _TestListState extends State<TestList> {
 
   void kategoriGet(int id)async{
     await databaseHelper.kategoriGet(id).then((value) {
-      testList.addAll(value);
-    });
-    setState(() {
-
+      controller.testList.value = value;
     });
   }
 
