@@ -1,17 +1,19 @@
 class Sorular {
   late int anaMenuId;
   late int kategoriId;
+  late int soruId;
   late String soru;
   late String a;
   late String b;
   late String c;
   late String d;
   late String cevap;
-  Sorular(this.anaMenuId,this.kategoriId, this.soru, this.a, this.b,this.c,this.d,this.cevap);
+  Sorular(this.anaMenuId,this.kategoriId,this.soruId, this.soru, this.a, this.b,this.c,this.d,this.cevap);
   Map<String, dynamic> toMap(){
     var map = Map<String, dynamic>();
     map['anaMenuId'] = anaMenuId;
     map['kategoriId'] = kategoriId;
+    map['soruId'] = soruId;
     map['soru'] = soru;
     map['a'] = a;
     map['b'] = b;
@@ -24,6 +26,7 @@ class Sorular {
   Sorular.fromMap(Map<dynamic, dynamic> map){
     this.anaMenuId = map['anaMenuId'];
     this.kategoriId = map['kategoriId'];
+    this.soruId = map['soruId'];
     this.soru = map['soru'];
     this.a = map['a'];
     this.b = map['b'];

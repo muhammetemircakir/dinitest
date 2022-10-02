@@ -1,40 +1,32 @@
  import 'dart:async';
 import 'dart:io';
+import 'package:dinisorular/models/puanTabloModel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 
 
-class DataBaseVeriEkleme {
-  static DataBaseVeriEkleme? _databaseHelper;
+class DataBaseCevap {
+  static DataBaseCevap? _databaseHelper;
   static Database ?_datebase;
 
-  String _WordTablo = "WordInfo";
-  String _WordId = "WordID";
-  String _Isim = "Isim";
-  String _Tur = "Tur";
-  String _Tanim = "Tanim";
-  String _Cumle = "Cumle";
-  String _WordSynonTablo = "WordSynon";
-  String _WordId2 = "WordID";
-  String _Isim2 = "synonyms";
   String _PuanTablo = "PuanTablo";
-  String _AnamenuID = "AnamenuID";
-  String _CategoriID = "CategoriID";
-  String _Puan = "Puan";
-  String _Acikmi = "Acikmi";
+  String _anaMenuId = "anaMenuId";
+  String _kategoriId = "kategoriId";
+  String _soruId = "soruId";
+  String _cevap = "cevap";
 
-  factory DataBaseVeriEkleme() {
+  factory DataBaseCevap() {
     if (_databaseHelper == null) {
-      _databaseHelper = DataBaseVeriEkleme._internal();
+      _databaseHelper = DataBaseCevap._internal();
       return _databaseHelper!;
     } else {
       return _databaseHelper!;
     }
   }
 
-  DataBaseVeriEkleme._internal();
+  DataBaseCevap._internal();
 
   Future<Database> _getDatabase() async {
     if (_datebase == null) {
@@ -55,47 +47,42 @@ class DataBaseVeriEkleme {
   }
 
   Future<void> _createDB(Database db, int version) async {
-    await db.execute("CREATE TABLE $_WordTablo ($_WordId TEXT, $_Isim TEXT, $_Tur TEXT, $_Tanim TEXT, $_Cumle TEXT )");
-    await db.execute("CREATE TABLE $_WordSynonTablo ($_WordId2 TEXT, $_Isim2 TEXT )");
-    await db.execute("CREATE TABLE $_PuanTablo ($_AnamenuID TEXT, $_CategoriID TEXT, $_Puan TEXT, $_Acikmi TEXT )");
+
+    await db.execute("CREATE TABLE $_PuanTablo ($_anaMenuId TEXT, $_kategoriId TEXT, $_soruId TEXT, $_cevap TEXT )");
 
   }
 
 
-  Future<int> sozEkle(DbWordInfo sozler) async{
+  Future<int> cevapEkle(PuanTablo cevap) async{
     var db =await _getDatabase();
 
-    var sonuc=await db.insert(_WordTablo,sozler.toMap(),);
+    var sonuc=await db.insert(_PuanTablo,cevap.toMap(),);
+
     return sonuc;
   }
 
-  Future<int> synonEkle(DbWordSynonyms sozler1) async{
-    var db =await _getDatabase();
 
-    var sonuc=await db.insert(_WordSynonTablo,sozler1.toMap(),);
-    return sonuc;
-  }
-
-  Future<List<DbWordInfo>> tumBilgileriGetir()async{
+  Future<List<PuanTablo>> tumBilgileriGetir()async{
     var db= await _getDatabase();
-    var sonuc= await db.query(_WordTablo);
-    var skorListesi = List<DbWordInfo>.empty(growable: true);
+    var sonuc= await db.query(_PuanTablo);
+    var skorListesi = List<PuanTablo>.empty(growable: true);
     for(Map map in sonuc){
-      skorListesi.add(DbWordInfo.fromMap(map));
+      skorListesi.add(PuanTablo.fromMap(map));
     }
     return skorListesi;
   }
 
-  Future<List<DbWordSynonyms>> tumSynonsGetir()async{
+  Future<List<PuanTablo>> soruBilgsiniGetir(String soruId)async{
     var db= await _getDatabase();
-    var sonuc= await db.query(_WordSynonTablo);
-    var skorListesi = List<DbWordSynonyms>.empty(growable: true);
+    var sonuc = await db.query(_PuanTablo, where: '$_soruId = ? ', whereArgs: [soruId]);
+    var skorListesi = List<PuanTablo>.empty(growable: true);
     for(Map map in sonuc){
-      skorListesi.add(DbWordSynonyms.fromMap(map));
+      skorListesi.add(PuanTablo.fromMap(map));
     }
     return skorListesi;
   }
 
+/*
   Future<bool>  favorikontrol(String WordID) async{
     var db= await _getDatabase();
     var sonuc = await db.query(_WordTablo, where: '$_WordId = ? ', whereArgs: [WordID]);
@@ -121,11 +108,16 @@ class DataBaseVeriEkleme {
 
     return kategoriListesi;
   }
-
-  Future<int> sozSil(String WordID) async{
+*/
+  Future<int> cevapSil(String soruId) async{
     var db=await _getDatabase();
-    var sonuc = await db.delete(_WordTablo, where: '$_WordId = ? ', whereArgs: [WordID]);
-    var sonuc1 = await db.delete(_WordSynonTablo, where: '$_WordId = ? ', whereArgs: [WordID]);
+    var sonuc = await db.delete(_PuanTablo, where: '$_soruId = ? ', whereArgs: [soruId]);
+    return sonuc;
+  }
+
+  Future<int> tumTestcevapSil(String soruId) async{
+    var db=await _getDatabase();
+    var sonuc = await db.delete(_PuanTablo, where: '$_anaMenuId = ? ', whereArgs: [soruId]);
     return sonuc;
   }
 
