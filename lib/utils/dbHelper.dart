@@ -84,12 +84,12 @@ class DatabaseHelper{
 
   }
 
-
   Future<List<Map<String,dynamic>>> kategorileriGetir(int id) async{
     var db= await _getDatabase();
     var sonuc = await db.rawQuery('select * from "kategori" where anaMenuId=$id');
     return sonuc;
   }
+
 
   Future<List<Kategori>> kategoriGet(int id) async{
 
@@ -117,6 +117,15 @@ class DatabaseHelper{
     }
     return CategoriesDetailsListe;
   }
+
+  Future<int> kategoriGuncelle(Kategori data,int AnaMenuID,int KategoriID) async{
+    var db=await _getDatabase();
+
+    var result = await db.update("kategori", data.toMap(), where: 'anaMenuId = ? AND kategoriId = ? ', whereArgs: [AnaMenuID,KategoriID]);
+
+    return result;
+  }
+
 
 
 

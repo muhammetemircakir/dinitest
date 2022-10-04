@@ -53,11 +53,11 @@ class BoxStyle {
 
   static BoxDecoration boxAnswerStyle(bool lightThema,RxInt isaret)
       {
-        Color color =lightThema ?Color(0xFFFFFFFF) :Color(0xFF444444);
+        Color color =lightThema ?UIColorThemaLight.Answer_COLOR :UIColorThemaDark.Answer_COLOR;
         if(isaret.toInt() == 1)
-         color=  lightThema ?Color(0xFF5FE775) :Color(0xFF30AC22);
+         color=  lightThema ?UIColorThemaLight.AnswerT_COLOR :UIColorThemaDark.AnswerT_COLOR;
         if(isaret.toInt() == 2)
-          color= Color(0xFFFF6767);
+          color=  lightThema ?UIColorThemaLight.AnswerF_COLOR :UIColorThemaDark.AnswerF_COLOR;
         return BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(25)),
           boxShadow: [

@@ -52,4 +52,12 @@ class UITextStyle{
           color:lightThema ? UIColorThemaLight.TEXT:UIColorThemaDark.TEXT,
 
       );
+
+  static TextStyle dogruSayi(double height,bool lightThema) =>
+      TextStyle(
+        fontSize: height,
+        inherit: false,
+        color:lightThema ? UIColorThemaLight.TEXT:UIColorThemaDark.TEXT,
+
+      );
 }

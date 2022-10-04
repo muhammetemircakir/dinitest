@@ -8,11 +8,10 @@ class UIColorThemaLight {
 
 
 
-
-
-  static const Color Answer_COLOR = Color(0xFFEFEFEF);
-  static const Color AnswerT_COLOR = Color(0xFFAEFDBA);
-  static const Color AnswerF_COLOR = Color(0xFFFFC3C3);
+  static const Color Answer_COLOR = Color(0xFFFFFFFF);
+  static const Color AnswerB_COLOR = Color(0xFFF1F153);
+  static const Color AnswerT_COLOR = Color(0xFF5FE775);
+  static const Color AnswerF_COLOR = Color(0xFFFF6767);
 
 }
 
@@ -27,8 +26,9 @@ class UIColorThemaDark {
 
 
 
-  static const Color Answer_COLOR = Color(0xFF2D2D2D);
-  static const Color AnswerT_COLOR = Color(0xFF478957);
-  static const Color AnswerF_COLOR = Color(0xFFF36C6C);
+  static const Color Answer_COLOR = Color(0xFF444444);
+  static const Color AnswerB_COLOR = Color(0xFFB6B53D);
+  static const Color AnswerT_COLOR = Color(0xFF30AC22);
+  static const Color AnswerF_COLOR = Color(0xFFFF6767);
 
 }

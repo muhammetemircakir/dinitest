@@ -1,5 +1,7 @@
 import 'package:dinisorular/aracGerec.dart';
 import 'package:dinisorular/controller/testController.dart';
+import 'package:dinisorular/models/dogruYanlisTablodModel.dart';
+import 'package:dinisorular/models/kategoriModel.dart';
 import 'package:dinisorular/models/puanTabloModel.dart';
 import 'package:dinisorular/ui/styles/box_style.dart';
 import 'package:dinisorular/ui/styles/text_style.dart';
@@ -10,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../controller/testListController.dart';
 import '../models/sorularModel.dart';
 import '../ui/helper/color_helper.dart';
 import '../utils/dbHelper.dart';
@@ -17,7 +20,10 @@ import '../utils/dbHelper.dart';
 class Test extends StatefulWidget {
   int anaMenuId;
   int kategoriId;
-   Test({Key? key,required this.anaMenuId,required this.kategoriId}) : super(key: key);
+  int dogru;
+  int yanlis;
+  int bos;
+   Test({Key? key,required this.anaMenuId,required this.kategoriId,required this.dogru,required this.yanlis,required this.bos}) : super(key: key);
 
   @override
   State<Test> createState() => _TestState();
@@ -31,16 +37,23 @@ class _TestState extends State<Test> {
   late double width;
   late bool lightThema;
   late bool isaretlimi = false;
-  late List<Sorular> soruList = [];
+
+  int dogru = 0;
+  int yanlis = 0;
+  int bos = 0;
   testController controller = Get.put(testController());
+  testListController controller1 = Get.find();
 
   @override
   void initState() {
+    dogru = widget.dogru;
+    yanlis = widget.yanlis;
+    bos = widget.bos;
+    print(bos);
     databaseHelper = DatabaseHelper();
     dataBaseCevap  = DataBaseCevap();
     getSorular();
     lightThema = box.read("thema")??true;
-
 
     super.initState();
   }
@@ -59,13 +72,13 @@ class _TestState extends State<Test> {
             backPage(),
             question(),
             AracGerec.sizedBox(height/100*5, 0.0),
-            answersA(),
+            Obx(()=>answersA("a",0,controller.soruLis.toList().isEmpty ?"":controller.soruLis.toList()[controller.counter.toInt()].a.toString())),
             AracGerec.sizedBox(height/100*2, 0.0),
-            answersB(),
+            Obx(()=>answersA("b",1,controller.soruLis.toList().isEmpty ?"":controller.soruLis.toList()[controller.counter.toInt()].b.toString())),
             AracGerec.sizedBox(height/100*2, 0.0),
-            answersC(),
+            Obx(()=>answersA("c",2,controller.soruLis.toList().isEmpty ?"":controller.soruLis.toList()[controller.counter.toInt()].c.toString())),
             AracGerec.sizedBox(height/100*2, 0.0),
-            answersD(),
+            Obx(()=>answersA("d",3,controller.soruLis.toList().isEmpty ?"":controller.soruLis.toList()[controller.counter.toInt()].d.toString())),
             AracGerec.sizedBox(height/100*4, 0.0),
             navigationBar(),
           ],
@@ -83,7 +96,9 @@ class _TestState extends State<Test> {
       child: Row(
         children: [
           GestureDetector(
-            onTap: Get.back,
+            onTap:(){
+              Get.back();
+            } ,
             child:Icon(Icons.arrow_back_ios,size: height/100*4,color: lightThema?UIColorThemaLight.TEXT:UIColorThemaDark.TEXT,),
           ),
         ],
@@ -102,109 +117,41 @@ class _TestState extends State<Test> {
     );
   }
 
-  GestureDetector answersA()
+  GestureDetector answersA(String sik,int id,String answer)
   {
     return GestureDetector(
       onTap: ()async{
+
+
         if(!isaretlimi)
           {
-            await setSoruBilgisi(controller.soruLis.toList()[controller.counter.toInt()].soruId.toString(),"a");
-            if("a" == controller.soruLis.toList()[controller.counter.toInt()].cevap)
-              controller.isaretler[0].value = 1;
+            await setSoruBilgisi(controller.soruLis.toList()[controller.counter.toInt()].soruId.toString(),sik);
+
+            if(sik == controller.soruLis.toList()[controller.counter.toInt()].cevap)
+             {
+               dogru++;
+               bos--;
+               print(bos);
+               controller.isaretler[id].value = 1;
+             }
             else {
-              controller.isaretler[0].value = 2;
+              yanlis++;
+              bos--;
+              print(bos);
+              controller.isaretler[id].value = 2;
               dogruCevapAc();
             }
+            setDogruYanlisSayi();
+            isaretlimi = true;
           }
       },
-      child:Obx(()=> Container(
+      child:Container(
         height: height/100*12,
         width: width/100*90,
         alignment: Alignment.center,
-        decoration: BoxStyle.boxAnswerStyle(lightThema,controller.isaretler.toList()[0]),
-        child:  Text(controller.soruLis.toList().isEmpty ?"":controller.soruLis.toList()[controller.counter.toInt()].a.toString(),style: UITextStyle.questions(height/100*2.2, lightThema),)),
-      ),
-    );
-  }
-  GestureDetector answersB()
-  {
-    return GestureDetector(
-      onTap: ()async{
-        if(!isaretlimi)
-          {
-            await setSoruBilgisi(controller.soruLis.toList()[controller.counter.toInt()].soruId.toString(),"b");
+        decoration: BoxStyle.boxAnswerStyle(lightThema,controller.isaretler.toList()[id]),
+        child:  Text(answer,style: UITextStyle.questions(height/100*2.2, lightThema),)),
 
-            if("b" == controller.soruLis.toList()[controller.counter.toInt()].cevap)
-              controller.isaretler[1].value = 1;
-            else {
-              controller.isaretler[1].value = 2;
-              dogruCevapAc();
-            }
-          }
-
-      },
-      child:Obx(()=> Container(
-        height: height/100*12,
-        width: width/100*90,
-        alignment: Alignment.center,
-        decoration: BoxStyle.boxAnswerStyle(lightThema,controller.isaretler.toList()[1]),
-        child:  Text(controller.soruLis.toList().isEmpty ?"":controller.soruLis.toList()[controller.counter.toInt()].b.toString(),style: UITextStyle.questions(height/100*2.2, lightThema),)),
-      ),
-    );
-  }
-  GestureDetector answersC()
-  {
-    return GestureDetector(
-      onTap: ()async{
-        if(!isaretlimi)
-          {
-            await setSoruBilgisi(controller.soruLis.toList()[controller.counter.toInt()].soruId.toString(),"a");
-
-            if("c" == controller.soruLis.toList()[controller.counter.toInt()].cevap)
-              controller.isaretler[2].value = 1;
-            else
-            {
-              controller.isaretler[2].value = 2;
-              dogruCevapAc();
-            }
-          }
-
-      },
-      child:Obx(()=>  Container(
-        height: height/100*12,
-        width: width/100*90,
-        alignment: Alignment.center,
-        decoration: BoxStyle.boxAnswerStyle(lightThema,controller.isaretler.toList()[2]),
-        child: Text(controller.soruLis.toList().isEmpty ?"":controller.soruLis.toList()[controller.counter.toInt()].c.toString(),style: UITextStyle.questions(height/100*2.2, lightThema),)),
-      ),
-    );
-  }
-  GestureDetector answersD()
-  {
-    return GestureDetector(
-      onTap: (){
-        if(!isaretlimi)
-        {
-          if("d" == controller.soruLis.toList()[controller.counter.toInt()].cevap) {
-            controller.isaretler[3].value = 1;
-            print("dogru");
-          }
-          else
-            {
-              controller.isaretler[3].value = 2;
-              dogruCevapAc();
-            }
-
-        }
-
-      },
-      child:Obx(()=>  Container(
-        height: height/100*12,
-        width: width/100*90,
-        alignment: Alignment.center,
-        decoration: BoxStyle.boxAnswerStyle(lightThema,controller.isaretler.toList()[3]),
-        child: Text(controller.soruLis.toList().isEmpty ?"":controller.soruLis.toList()[controller.counter.toInt()].d.toString(),style: UITextStyle.questions(height/100*2.2, lightThema),)),
-      ),
     );
   }
 
@@ -243,17 +190,13 @@ class _TestState extends State<Test> {
       ),
     );
   }
-
   void getSorular()async
   {
     databaseHelper.sorularGet(widget.anaMenuId,widget.kategoriId).then((value){
-      soruList.addAll(value);
-
       controller.soruLis.value = value;
       getSoruBilgisi(controller.soruLis.toList()[controller.counter.toInt()].soruId.toString());
     });
   }
-
   cevaplarRenk() {
     String anlikCevap = controller.soruLis.toList()[controller.counter.toInt()].cevap.toString();
     controller.isaretleriSifirla();
@@ -317,9 +260,20 @@ class _TestState extends State<Test> {
     });
   }
 
+
   setSoruBilgisi(String soruId,String cevap)
   async{
    await dataBaseCevap.cevapEkle(PuanTablo(widget.anaMenuId.toString(),widget.kategoriId.toString(),soruId, cevap));
 
   }
+
+  setDogruYanlisSayi() async
+  {
+    await databaseHelper.kategoriGuncelle(Kategori(widget.anaMenuId,widget.kategoriId,dogru , yanlis, bos,1),widget.anaMenuId,widget.kategoriId).then((value){
+
+    });
+    controller1.kategoriGet(widget.anaMenuId);
+  }
+
+
 }

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../aracGerec.dart';
 import '../controller/homeController.dart';
 import '../ui/styles/text_style.dart';
 
@@ -71,9 +72,27 @@ class _CategoriesPageState extends State<CategoriesPage> {
       height: height/100 * 10,
       width: width,
       alignment: Alignment.center,
-      child: Text(
-        "Kategori",
-            style: UITextStyle.baslikText(height/100*5,lightThema ? UIColorThemaLight.TEXT : UIColorThemaDark.TEXT),
+      child: Row(
+        children: [
+          AracGerec.sizedBox(0.0, width/100*5),
+          GestureDetector(
+            onTap: Get.back,
+            child:Container(
+                width: width/100*10,
+                child: Icon(Icons.arrow_back_ios,size: height/100*4,color: lightThema?UIColorThemaLight.TEXT:UIColorThemaDark.TEXT,)),
+          ),
+          AracGerec.sizedBox(0.0, width/100*10),
+          Container(
+            width: width/100*50,
+            color: Colors.transparent,
+            alignment: Alignment.center,
+            child: Text(
+              "Kategori",
+              style: UITextStyle.baslikText(height/100*5,lightThema ? UIColorThemaLight.TEXT : UIColorThemaDark.TEXT),
+            ),
+          ),
+
+        ],
       ),
     );
   }
